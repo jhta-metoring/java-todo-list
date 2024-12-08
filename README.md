@@ -1,7 +1,5 @@
 # java-todo-list
 
-test
-
 ## 코드리뷰 가이드
 [링크](https://github.com/next-step/nextstep-docs/blob/master/codereview/README.md)
 
@@ -131,3 +129,14 @@ Repository 패턴은 데이터 액세스 로직을 중심화하고 데이터 스
    예를 들어, TodoController는 생성자를 통해 TodoService 인스턴스를 받고, TodoService는 TodoRepository 인스턴스를 받습니다.
 
 이렇게 함으로써 각 클래스는 필요한 의존성만을 명확히 알고 있으며, 의존성 관리는 Main 클래스에서 중앙집중적으로 이루어집니다.
+
+
+## 🔥 ㅤPR Contents
+<!-- PR에 포함된 내용과 목적을 간단히 설명해주세요. -->
+-
+## 🛠ㅤChanges (optional)
+<!-- 변경된 내용을 기술해주세요. -->
+-
+## 🙋ㅤComments (optional)
+<!-- 필요한 경우 추가적인 의견이나 참고 사항을 작성해주세요. -->
+-
