@@ -24,7 +24,7 @@ enum MenuOption {
                 return option;
             }
         }
-        return null; // 잘못된 입력
+        return null; // 잘못된 입력.
     }
 }
 
