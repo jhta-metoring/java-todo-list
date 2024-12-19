@@ -182,10 +182,6 @@ public class TodoController {
       new_due = dateValdiationCheck(input[2]);
     }
 
-    if (new_due != null) {
-      System.out.println("새 마감일 : " + new_due.toString());
-    }
-
     edit = serviceImpl.editTodo(input, new_due, edit);
 
     outputView.print("==========수정된 할일==========");
