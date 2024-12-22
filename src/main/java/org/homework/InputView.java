@@ -17,6 +17,4 @@ public class InputView {
         System.out.print("완료할 일의 ID를 입력하세요: ");
         return scanner.nextLine();
     }
-
-
 }
