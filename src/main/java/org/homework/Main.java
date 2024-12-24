@@ -38,6 +38,10 @@ public class Main {
     }
 
     public static void main(String[] args) {
+
+        TodoController controller = new TodoController();
+        controller.run();
+
         Scanner sc = new Scanner(System.in);
         HashMap<Integer, String> todoList = new HashMap<>();
         int nextId = 1;
