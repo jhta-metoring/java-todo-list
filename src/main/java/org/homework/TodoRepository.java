@@ -5,33 +5,33 @@ import java.util.HashMap;
 import java.util.List;
 
 public class TodoRepository {
-    private final HashMap<String, Todo> toDo;
-    private int IdCount;
+    private final HashMap<String, Todo> todo;
+    private int idCount;
 
     public TodoRepository() {
-        this.toDo = new HashMap<>();
-        this.IdCount = 1;
+        this.todo = new HashMap<>();
+        this.idCount = 1;
     }
 
-    public String AddId() {
-        return String.valueOf(IdCount++);
+    public String addId() {
+        return String.valueOf(idCount++);
     }
 
     public void add(Todo todo) {
-        toDo.put(todo.getId(), todo);
+        this.todo.put(todo.getId(), todo);
     }
 
     public List<Todo> findAll() {
-        return new ArrayList<>(toDo.values());
+        return new ArrayList<>(todo.values());
     }
 
     public Todo findById(String id) {
-        return toDo.get(id);
+        return todo.get(id);
     }
 
     public boolean deleteById(String id) {
-        if (toDo.containsKey(id)) {
-            toDo.remove(id);
+        if (todo.containsKey(id)) {
+            todo.remove(id);
             return true;
         }
         return false;

@@ -18,66 +18,43 @@ public class TodoController {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
-            outputView.Menu();
-            String operationInput = inputView.getMenuOperation(scanner);
-            EnumClass operation = EnumClass.fromInput(operationInput);
+            outputView.menu();
+            String operationInput = inputView.getMenuOperation();
+            Enum operation = Enum.fromInput(operationInput);
 
             switch (operation) {
                 case Add:
-                    String content = inputView.getTodoContent(scanner);
+                    String content = inputView.getTodoContent();
                     service.addTodo(content);
-                    System.out.println("할 일이 추가되었습니다.");
+                    outputView.printAdd();
                     break;
-                case ToDoList:
-                    outputView.ToDoList(service.getToDoList());
+                case AllList:
+                    outputView.printToDoList(service.getToDoList());
+                    break;
+                case SelectList:
+                    String selectId = inputView.getSelectId();
+                    outputView.printSelect(service.getTodoById(selectId));
                     break;
                 case Complete:
-                    String id = inputView.getTodoId(scanner);
-                    boolean result = service.completeTodoById(id);
-                    if (result) {
-                        System.out.println("할 일이 완료되었습니다.");
-                    } else {
-                        System.out.println("해당 ID의 할 일을 찾을 수 없습니다.");
-                    }
+                    String id = inputView.getTodoId();
+                    outputView.printComplete(service.completeTodoById(id));
                     break;
                 case Delete:
-                    String deleteId = inputView.getTodoId(scanner);
-                    boolean result2 = service.deleteTodoById(deleteId);
-                    if (result2) {
-                        System.out.println("할 일이 삭제되었습니다.");
-                    } else {
-                        System.out.println("해당 ID의 할 일이 없습니다.");
-                    }
+                    String deleteId = inputView.getTodoId();
+                    outputView.printDelete(service.deleteTodoById(deleteId));
                     break;
                 case Exit:
-                    System.out.println("프로그램을 종료합니다.");
-                    scanner.close();
+                    outputView.printExit();
+                    inputView.exit();
                     return;
                 case False:
-                    System.out.println("잘못된 입력입니다. 다시 시도하세요.");
+                    outputView.printFalse();
                     break;
-
                 default:
-                    System.out.println("알 수 없는 오류가 발생했습니다.");
+                    outputView.printError();
                     break;
             }
         }
     }
 }
 
-enum EnumClass {
-    Add("1"), ToDoList("2"), Complete("3"), Delete("4"), Exit("5"), False("");
-
-    private final String option;
-    EnumClass(String option) {
-        this.option = option;
-    }
-    public static EnumClass fromInput(String input) {
-        for (EnumClass op : EnumClass.values()) {
-            if (op.option.equals(input)) {
-                return op;
-            }
-        }
-        return False;
-    }
-}

@@ -10,7 +10,7 @@ public class TodoService {
     }
 
     public void addTodo(String content) {
-        String id = repository.AddId();
+        String id = repository.addId();
         Todo todo = new Todo(id, content);
         repository.add(todo);
     }
@@ -19,16 +19,25 @@ public class TodoService {
         return repository.findAll();
     }
 
-    public boolean completeTodoById(String id) {
+    public String completeTodoById(String id) {
         Todo todo = repository.findById(id);
         if (todo != null) {
             todo.Completed();
-            return true;
+            return "할 일이 완료되었습니다.";
         }
-        return false;
+        return "해당 ID의 할 일을 찾을 수 없습니다.";
     }
 
-    public boolean deleteTodoById(String id) {
-        return repository.deleteById(id);
+    public String deleteTodoById(String id) {
+        boolean deleteResult = repository.deleteById(id);
+        return deleteResult ? "할 일이 삭제되었습니다." : "해당 ID의 할 일이 없습니다.";
+    }
+
+    public String getTodoById(String id) {
+        Todo todo = repository.findById(id);
+        if (todo != null) {
+            return todo.toString();
+        }
+        return "해당 ID의 할 일이 없습니다.";
     }
 }
