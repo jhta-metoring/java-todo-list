@@ -21,8 +21,16 @@ public class TodoService {
     return todo;
   }
 
-  public List<Todo> getSearchList(String word) {
-    return dao.getSearchList(word);
+  public List<Todo> getSearchList(String[] input) {
+    // return switch 가능한 것 참고
+    return switch (input[0]) {
+      case "1" -> dao.getSearchListById(input[1]);
+      case "2" -> dao.getSearchListByName(input[1]);
+      case "3" -> dao.getSearchListByDesc(input[1]);
+      case "4" -> dao.getSearchListByReg(input[1]);
+      case "5" -> dao.getSearchListByDue(input[1]);
+      default -> List.of(); // 크기가 0인 list 반환
+    };
   }
 
   public List<Todo> select_all() {
