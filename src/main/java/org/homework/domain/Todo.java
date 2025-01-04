@@ -14,7 +14,10 @@ public class Todo {
   private LocalDate due_date;       // 마감일
 
 
-  public Todo() {
+  public Todo(String name, String description, LocalDate due) {
+    this.name = name;
+    this.description = description;
+    this.due_date = due;
   }
 
   public String getId() {
@@ -79,12 +82,6 @@ public class Todo {
 
   public String toString() {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-    return "id : " + id + "\n"
-        + "할 일 이름 : " + name + "\n"
-        + "할 일의 내용 : " + description + "\n"
-        + "완료 여부 : " + (done ? "[완료]" : "[미완료]") + "\n"
-        + "생성일 : " + reg_date.format(formatter) + "\n"
-        + "마감일 : " + due_date.format(formatter);
+    return  String.format("%-10s\t\t%-20s\t\t%-20s\t\t%-20s\t\t%-20s\t\t%-20s", id, name, description,(done ? "완료" : "미완료"), reg_date.format(formatter), due_date.format(formatter));
   }
 }
