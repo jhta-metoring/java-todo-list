@@ -24,7 +24,7 @@ public class InputView {
   }
 
   public String input() throws IOException {
-    return br.readLine();
+    return br.readLine().trim();
   }
 
   public void print(String output) throws IOException {
@@ -39,22 +39,21 @@ public class InputView {
 
   // 할 일 정보 입력
   public Todo todoForm() throws IOException {
-    Todo todo = new Todo();
+
 
     print("할 일의 이름을 입력하세요");
     String name = input();
-    todo.setName(name);
 
     print("할 일의 내용을 입력하세요");
     String description = input();
-    todo.setDescription(description);
 
     print("마감일을 입력하세요 (ex: 2024-12-22)");
     String dueDate = input();
 
     LocalDate due = dateValdiationCheck(dueDate); // 마감일 유효성 검사하여 리턴
 
-    todo.setDue_date(due);
+    Todo todo = new Todo(name, description, due);
+
 
     return todo;
   }
@@ -112,35 +111,33 @@ public class InputView {
     Todo edit = null;
     if (opt.isEmpty()) {
       print("해당하는 할 일이 없습니다. 메뉴로 돌아갑니다.");
-      return null;
+      return Optional.empty();
     } else {
       edit = opt.get();
     }
-
-    print("==========수정할 할일==========");
+    print(String.format("%-140s", "-").replaceAll(" ", "-"));
+    print("수정할 할일");
     print(edit.toString());
+    print(String.format("%-140s", "-").replaceAll(" ", "-"));
 
     // 수정하려는 Todo 는 service 에서 처리
     print("새 이름을 입력하세요 (그대로 두려면 Enter)");
     String new_name = input();
 
-    if (!new_name.trim()
-                    .isEmpty()) {
+    if (!new_name.isEmpty()) {
       edit.setName(new_name);
     }
 
     print("새 내용을 입력하세요 (그대로 두려면 Enter)");
     String new_desc = input();
 
-    if (!new_desc.trim()
-                    .isEmpty()) {
+    if (!new_desc.isEmpty()) {
       edit.setDescription(new_desc);
     }
 
     print("새 마감일을 입력하세요 (그대로 두려면 Enter)");
     String new_due_str = input();
-    if (!new_due_str.trim()
-                    .isEmpty()) {
+    if (!new_due_str.isEmpty()) {
       LocalDate new_due = dateValdiationCheck(new_due_str);
       edit.setDue_date(new_due);
     }
@@ -148,10 +145,36 @@ public class InputView {
     return opt;
   }
 
-  public String inputSearch() throws IOException {
-    print("검색어를 입력하세요");
-    print("[ id, 이름, 내용, 등록일, 마감일(yyyy-mm-dd) ]");
-    return input();
+  public String[] inputSearch() throws IOException {
+    String[] input = new String[2];
+    print("검색할 키워드를 입력하세요");
+    print("[ 1.id, 2.이름, 3.내용, 4.등록일(yyyy-mm-dd), 5.마감일(yyyy-mm-dd)]");
+    input[0] = input();
+    while (true) {
+      if (input[0].equals("1") ||
+          input[0].equals("2") ||
+          input[0].equals("3") ||
+          input[0].equals("4") ||
+          input[0].equals("5")) {
+        break;
+      } else {
+        print("올바른 번호를 입력하세요");
+        input[0] = input();
+      }
+    }
+
+    print("검색할 키워드를 입력하세요");
+    input[1] = input();
+    while (true) {
+      if (!input[1].isEmpty()) {
+        break;
+      } else {
+        print("검색어를 입력하세요");
+        input[1] = input();
+      }
+    }
+
+    return input;
   }
 
   public String getDeleteId() throws IOException {
