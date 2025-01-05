@@ -2,6 +2,7 @@ package org.homework.domain;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -39,7 +40,13 @@ public class TodoRepository {
   }
 
   public List<Todo> select_all() {
-    return list;
+    return this.list.stream()
+        .filter(Todo -> {
+          return Todo.getDue_date()
+              .isBefore(LocalDate.now()
+                          .plusDays(7L));
+        }).collect(Collectors.toList());
+
   }
 
   // stream.filter() 에서 사용할 메서드
@@ -65,7 +72,7 @@ public class TodoRepository {
   }
 
   // stream.filter() 에서 사용할 메서드2
-  private static boolean predicate2(Todo todo, String id) {
+  private static boolean predicateId(Todo todo, String id) {
     if (todo.getId().equals(id)) { // id 로 검색
       return true;
     } else {
@@ -83,7 +90,7 @@ public class TodoRepository {
   public int delete(String id) {
     int total = list.size();
     this.list = (ArrayList<Todo>) list.stream()
-                                        .filter(Todo -> !predicate2(Todo, id))
+                                        .filter(Todo -> !predicateId(Todo, id))
                                           .collect(Collectors.toList());
 
     return total - list.size();
@@ -114,10 +121,70 @@ public class TodoRepository {
   public Optional<Todo> getTodoById(String id) {
     List<Todo> result = this.list
                               .stream()
-                                .filter(Todo -> predicate2(Todo, id))
+                                .filter(Todo -> predicateId(Todo, id))
                                   .collect(Collectors.toList());
 
     return Optional.ofNullable(result.get(0));
+  }
+
+  public List<Todo> getSearchListById(String id) {
+    return this.list
+                  .stream()
+                    .filter(Todo -> {
+                      if (Todo.getId().equals(id)) { // 이름으로 검색
+                        return true;
+                      } else {
+                        return false;}
+                    })
+                      .collect(Collectors.toList());
+  }
+
+  public List<Todo> getSearchListByName(String name) {
+    return this.list
+        .stream()
+        .filter(Todo -> {
+          if (Todo.getName().contains(name)) { // 이름으로 검색
+            return true;
+          } else {
+            return false;}
+        })
+        .collect(Collectors.toList());
+  }
+
+  public List<Todo> getSearchListByDesc(String desc) {
+    return this.list
+        .stream()
+        .filter(Todo -> {
+          if (Todo.getDescription().contains(desc)) { // 내용으로 검색
+            return true;
+          } else {
+            return false;}
+        })
+        .collect(Collectors.toList());
+  }
+
+  public List<Todo> getSearchListByReg(String reg) {
+    return this.list
+        .stream()
+        .filter(Todo -> {
+          if (Todo.getReg_dateString().equals(reg)) { // 등록일로 검색
+            return true;
+          } else {
+            return false;}
+        })
+        .collect(Collectors.toList());
+  }
+
+  public List<Todo> getSearchListByDue(String due) {
+    return this.list
+        .stream()
+        .filter(Todo -> {
+          if (Todo.getDue_dateString().equals(due)) { // 마감일로 검색
+            return true;
+          } else {
+            return false;}
+        })
+        .collect(Collectors.toList());
   }
 }
 

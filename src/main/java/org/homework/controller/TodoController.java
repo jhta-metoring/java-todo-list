@@ -67,9 +67,9 @@ public class TodoController {
 
   private void searchTodo() throws IOException {
 
-    String word = inputView.inputSearch();
+    String[] input = inputView.inputSearch();
 
-    List<Todo> list = todoService.getSearchList(word);
+    List<Todo> list = todoService.getSearchList(input);
 
     outputView.printSearch(list);
   }

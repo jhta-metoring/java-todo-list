@@ -20,7 +20,7 @@ public class OutputView {
   }
 
   public String input() throws IOException {
-    return br.readLine();
+    return br.readLine().trim();
   }
 
   public void print(String output) throws IOException {
@@ -40,7 +40,7 @@ public class OutputView {
         bw.write(e.getMessage());
         bw.flush();
       } else {
-        bw.write("추가 정보가 필요합니다.");
+        bw.write("오류 추가 정보가 필요합니다.");
         bw.flush();
       }
 
@@ -52,11 +52,11 @@ public class OutputView {
 
   public void printMenu() throws IOException {
     String[] menu = {"1.추가", "2.검색", "3.수정", "4.전체 조회", "5.삭제", "6.완료", "7.종료"};
-    print("=========메뉴를 선택하세요=========");
+    print("메뉴를 선택하세요");
     for (String m : menu) {
       bw.write(m + "\n");
     }
-    print("===============================");
+    print(String.format("%-140s", "-").replaceAll(" ", "-"));
   }
 
   public void printExit() throws IOException {
@@ -66,42 +66,50 @@ public class OutputView {
   public void printList(List<Todo> list) throws IOException {
     for (Todo todo : list) {
       print(todo.toString());
-      print("==============================");
     }
   }
 
     public void printEditTodo(Optional<Todo> opt) throws IOException {
       if (opt.isPresent()) {
-        print("==========수정된 할일==========");
+        print(String.format("%-10s\t\t%-20s\t\t%-20s\t\t%-20s\t\t%-20s\t\t%-20s","ID", "이름", "내용", "상태", "등록일", "마감일"));
+        print(String.format("%-140s", "-").replaceAll(" ", "-"));
         print(opt.get()
                   .toString());
+        print(String.format("%-140s", "-").replaceAll(" ", "-"));
       } else {
-        print("==========수정에 실패했습니다.==========");
+        print("수정에 실패했습니다.");
       }
     }
 
   public void printAddResult(Todo todo) throws IOException {
     print("정상 등록되었습니다.");
 
+    print(String.format("%-10s\t\t%-20s\t\t%-20s\t\t%-20s\t\t%-20s\t\t%-20s","ID", "이름", "내용", "상태", "등록일", "마감일"));
+    print(String.format("%-140s", "-").replaceAll(" ", "-"));
     print(todo.toString()); // 등록한 할 일 정보 출력
+    print(String.format("%-140s", "-").replaceAll(" ", "-"));
 
   }
 
   public void printSearch(List<Todo> list) throws IOException {
     if (list.size() > 0) {
+      print(String.format("%-10s\t\t%-20s\t\t%-20s\t\t%-20s\t\t%-20s\t\t%-20s","ID", "이름", "내용", "상태", "등록일", "마감일"));
+      print(String.format("%-140s", "-").replaceAll(" ", "-"));
       printList(list);
+      print(String.format("%-140s", "-").replaceAll(" ", "-"));
     } else {
       print("검색 결과가 존재하지 않습니다.");
     }
   }
 
   public void printAll(List<Todo> list) throws IOException {
-    print("==========할 일 전체 출력==========");
-
     if (list.isEmpty()) {
       print("입력된 할 일이 없습니다.");
     } else {
+      print(String.format("%-10s\t\t%-20s\t\t%-20s\t\t%-20s\t\t%-20s\t\t%-20s","ID", "이름", "내용", "상태", "등록일", "마감일"));
+      print(String.format("%-140s", "-").replaceAll(" ", "-"));
       printList(list);
+      print(String.format("%-140s", "-").replaceAll(" ", "-"));
     }
   }
 
