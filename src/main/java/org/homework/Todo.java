@@ -1,34 +1,41 @@
 package org.homework;
 
-public class Todo {
-    private final int id;
-    private final String description;
-    private boolean isCompleted;
+import java.time.LocalDate;
 
-    public Todo(int id, String description) {
+public class Todo {
+    private int id;
+    private String title;
+    private String description;
+    private LocalDate dueDate;
+
+    public Todo(int id, String title, String description, LocalDate dueDate) {
         this.id = id;
+        this.title = title;
         this.description = description;
-        this.isCompleted = false; // 기본 상태: 미완료
+        this.dueDate = dueDate;
     }
 
     public int getId() {
         return id;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
     public String getDescription() {
         return description;
     }
 
-    public boolean isCompleted() {
-        return isCompleted;
-    }
-
-    public void complete() {
-        this.isCompleted = true;
+    public LocalDate getDueDate() {
+        return dueDate;
     }
 
     @Override
     public String toString() {
-        return "ID: " + id + ", 내용: " + description + ", 상태: " + (isCompleted ? "[완료]" : "[미완료]");
+        return String.format("[ID: %d] %s (마감일: %s)\n설명: %s", id, title, dueDate, description);
     }
 }
+
+
+

@@ -1,6 +1,8 @@
 package org.homework;
 
-import java.util.Map;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class TodoService {
     private final TodoRepository repository;
@@ -9,28 +11,25 @@ public class TodoService {
         this.repository = repository;
     }
 
-    public Todo addTodo(String description) {
-        return repository.add(description);
-    }
-
-    public Todo findTodoById(int id) {
-        return repository.findById(id);
-    }
-
-    public Todo deleteTodoById(int id) {
-        return repository.delete(id);
-    }
-
-    public Map<Integer, Todo> getAllTodos() {
+    public List<Todo> getAllTodos() {
         return repository.findAll();
     }
 
-    public boolean completeTodoById(int id) {
-        Todo todo = repository.findById(id);
-        if (todo != null) {
-            todo.complete();
-            return true;
-        }
-        return false;
+    public List<Todo> getUpcomingTodos() {
+        return repository.findAll().stream()
+                .filter(todo -> !todo.getDueDate().isBefore(LocalDate.now()) &&
+                        !todo.getDueDate().isAfter(LocalDate.now().plusDays(7)))
+                .sorted((t1, t2) -> t1.getDueDate().compareTo(t2.getDueDate()))
+                .collect(Collectors.toList());
+    }
+
+    public void addTodo(Todo todo) {
+        repository.save(todo);
+    }
+
+    public List<Todo> searchTodosByKeyword(String keyword) {
+        return repository.findByKeyword(keyword).stream()
+                .sorted((t1, t2) -> t1.getDueDate().compareTo(t2.getDueDate()))
+                .collect(Collectors.toList());
     }
 }

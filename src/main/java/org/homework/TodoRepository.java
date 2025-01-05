@@ -1,27 +1,24 @@
 package org.homework;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class TodoRepository {
-    private final Map<Integer, Todo> todoList = new HashMap<>();
-    private int nextId = 1;
+    private final List<Todo> todos = new ArrayList<>();
 
-    public Todo add(String description) {
-        Todo todo = new Todo(nextId++, description);
-        todoList.put(todo.getId(), todo);
-        return todo;
+    public List<Todo> findAll() {
+        return new ArrayList<>(todos);
     }
 
-    public Todo findById(int id) {
-        return todoList.get(id);
+    public void save(Todo todo) {
+        todos.add(todo);
     }
 
-    public Todo delete(int id) {
-        return todoList.remove(id);
-    }
-
-    public Map<Integer, Todo> findAll() {
-        return new HashMap<>(todoList);
+    public List<Todo> findByKeyword(String keyword) {
+        return todos.stream()
+                .filter(todo -> todo.getTitle().contains(keyword) || todo.getDescription().contains(keyword))
+                .collect(Collectors.toList());
     }
 }
